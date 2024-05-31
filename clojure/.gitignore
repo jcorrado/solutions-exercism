@@ -1,0 +1,5 @@
+*/target
+*/.lein-failures
+*/.nrepl-port
+*/.solution.json
+*/.lein-repl-history

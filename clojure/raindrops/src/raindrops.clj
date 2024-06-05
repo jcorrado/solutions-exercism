@@ -7,6 +7,5 @@
                    (conj accum word)
                    accum))
                [])      
-       (remove nil?)
        ((fn [x] (if (empty? x) [n] x)))
        (apply str)))

@@ -1,10 +1,5 @@
 (ns card-games)
 
-(defn- average [coll]
-  (let [cnt (count coll)
-        tot (reduce + coll)]
-    (/ tot (float cnt))))
-
 (defn rounds
   "Takes the current round number and returns 
    a `list` with that round and the _next two_."
@@ -22,11 +17,12 @@
   "Takes a list of rounds played and a round number.
    Returns `true` if the round is in the list, `false` if not."
   [l n]
-  (or (some #(= n %) l) false))
+  (boolean (some #(= n %) l)))
 
 (defn card-average
   "Returns the average value of a hand"
-  [hand] (average hand))
+  [hand]
+  (double (/ (reduce + hand) (count hand))))
 
 (defn approx-average?
   "Returns `true` if average is equal to either one of:
@@ -34,10 +30,10 @@
   - Using the median (middle card) of the hand."
   [hand]
   (let [avg (card-average hand)
-        f-l-avg (/ (+ (first hand) (last hand)) 2)
-        median  (nth hand (quot (count hand) 2))]
-    (or (== f-l-avg avg)
-        (== median avg))))
+        f-l-avg (double (/ (+ (first hand) (last hand)) 2))
+        median  (double (nth hand (/ (count hand) 2)))]
+    (or (= f-l-avg avg)
+        (= median avg))))
 
 (defn average-even-odd?
   "Returns true if the average of the cards at even indexes 
@@ -49,7 +45,7 @@
                                [odd (conj even x)]))
                            [[] []]
                            (map-indexed vector hand))]
-    (= (average odd) (average even))))
+    (= (card-average odd) (card-average even))))
 
 (defn maybe-double-last
   "If the last card is a Jack (11), doubles its value
